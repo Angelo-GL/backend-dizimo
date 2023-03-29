@@ -3,6 +3,7 @@ package com.dizimo.backend_dizimo.controller;
 import com.dizimo.backend_dizimo.dto.MessageResposeDTO;
 import com.dizimo.backend_dizimo.entities.User;
 import com.dizimo.backend_dizimo.exceptions.UserNotFoundExceptions;
+import com.dizimo.backend_dizimo.repositories.UserRepository;
 import com.dizimo.backend_dizimo.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -19,6 +20,8 @@ import java.util.Optional;
 public class UserController {
     @Autowired
     private UserService userService;
+    @Autowired
+    private UserRepository userRepository;
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
@@ -36,8 +39,9 @@ public class UserController {
         return ResponseEntity.ok(user);
     }
 
+    @PutMapping("/user")
     public MessageResposeDTO UpdateUser (@RequestBody @Validated User user){
-
+        return userService.updateUser(user);
     }
 
 }

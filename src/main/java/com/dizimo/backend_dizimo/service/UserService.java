@@ -4,11 +4,16 @@ import com.dizimo.backend_dizimo.dto.MessageResposeDTO;
 import com.dizimo.backend_dizimo.entities.User;
 import com.dizimo.backend_dizimo.exceptions.UserNotFoundExceptions;
 import com.dizimo.backend_dizimo.repositories.UserRepository;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
 
+@Service
 public class UserService {
+
+    @Autowired
     private UserRepository repository;
 
     public MessageResposeDTO createUser(User user) {
@@ -24,7 +29,7 @@ public class UserService {
         return verifyIfExists(id);
     }
 
-    public MessageResposeDTO updateUser (User user) throws UserNotFoundExceptions {
+    public MessageResposeDTO updateUser (User user){
         Optional<User> userFund = repository.findById(user.getId());
 
         if (userFund.isPresent()) {
@@ -39,6 +44,8 @@ public class UserService {
             return new MessageResposeDTO("Not found User of Id " + user.getId());
         }
     }
+
+
 
     private MessageResposeDTO createMessageResponse(Long id) {
         return new MessageResposeDTO("Created User with ID" + id);
