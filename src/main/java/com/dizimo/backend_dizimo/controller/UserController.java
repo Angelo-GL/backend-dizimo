@@ -5,6 +5,7 @@ import com.dizimo.backend_dizimo.entities.User;
 import com.dizimo.backend_dizimo.exceptions.UserNotFoundExceptions;
 import com.dizimo.backend_dizimo.repositories.UserRepository;
 import com.dizimo.backend_dizimo.service.UserService;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
@@ -25,7 +26,7 @@ public class UserController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public MessageResposeDTO createUser(@RequestBody @Validated User user){
+    public MessageResposeDTO createUser(@RequestBody @Valid User user){
         return userService.createUser(user);
     }
 
@@ -33,6 +34,7 @@ public class UserController {
     public ResponseEntity<List<User>> findAll (){
         return ResponseEntity.ok(userService.findAllUser());
     }
+
     @GetMapping("/{id}")
     public ResponseEntity<User> findById (@PathVariable Long id) throws UserNotFoundExceptions {
         User user = userService.findByIdUser(id);
@@ -40,7 +42,7 @@ public class UserController {
     }
 
     @PutMapping("/user")
-    public MessageResposeDTO UpdateUser (@RequestBody @Validated User user){
+    public MessageResposeDTO UpdateUser (@RequestBody @Valid User user){
         return userService.updateUser(user);
     }
 

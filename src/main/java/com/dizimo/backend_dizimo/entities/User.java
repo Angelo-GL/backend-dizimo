@@ -1,6 +1,9 @@
 package com.dizimo.backend_dizimo.entities;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotBlank;
+import org.hibernate.validator.constraints.br.CPF;
 
 @Entity
 @Table(name= "users")
@@ -9,12 +12,16 @@ public class User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     @Column(nullable = false)
+    @NotBlank
     private String name;
     @Column(nullable = false, unique = true)
+    @Email
     private String email;
     @Column(nullable = false)
+    @NotBlank
     private String passWord;
     @Column(nullable = false, unique = true)
+    @CPF
     private String cpf;
 
     public  User () {}
