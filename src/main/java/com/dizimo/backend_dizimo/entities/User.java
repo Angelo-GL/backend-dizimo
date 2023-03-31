@@ -16,11 +16,13 @@ public class User {
     private String name;
     @Column(nullable = false, unique = true)
     @Email
+    @NotBlank
     private String email;
     @Column(nullable = false)
     @NotBlank
     private String passWord;
     @Column(nullable = false, unique = true)
+    @NotBlank
     @CPF
     private String cpf;
 

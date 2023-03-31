@@ -41,7 +41,7 @@ public class UserController {
         return ResponseEntity.ok(user);
     }
 
-    @PutMapping("/user")
+    @PutMapping()
     public MessageResposeDTO UpdateUser (@RequestBody @Valid User user){
         return userService.updateUser(user);
     }
