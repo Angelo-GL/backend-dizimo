@@ -4,6 +4,8 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 @Entity
@@ -38,9 +40,12 @@ public class Dizimista {
     @Column(nullable = true)
     private String celular;
 
+    @Column
+    private List<Oferta> ofertas = new ArrayList<>();
+
     public Dizimista(){}
 
-    public Dizimista(Long id, String name, LocalDate nascimento, String bairro, String rua, Integer numero, Boolean ativo, String celular) {
+    public Dizimista(Long id, String name, LocalDate nascimento, String bairro, String rua, Integer numero, Boolean ativo, String celular, List<Oferta> ofertas) {
         this.id = id;
         this.name = name;
         this.nascimento = nascimento;
@@ -49,6 +54,7 @@ public class Dizimista {
         this.numero = numero;
         this.ativo = ativo;
         this.celular = celular;
+        this.ofertas = ofertas;
     }
 
     public Long getId() {
@@ -125,6 +131,14 @@ public class Dizimista {
     @Override
     public int hashCode() {
         return Objects.hash(getId(), getName(), getNascimento(), getBairro(), getRua(), getNumero(), getAtivo(), getCelular());
+    }
+
+    public List<Oferta> getOfertas() {
+        return ofertas;
+    }
+
+    public void setOfertas(List<Oferta> ofertas) {
+        this.ofertas = ofertas;
     }
 }
 
