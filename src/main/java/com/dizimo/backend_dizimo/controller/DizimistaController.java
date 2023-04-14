@@ -34,6 +34,11 @@ public class DizimistaController {
         return ResponseEntity.ok(dizimistaService.findByIdDizimista(id));
     }
 
+    @PutMapping
+    public MessageResposeDTO updateDizimista (@RequestBody @Valid Dizimista dizimista){
+        return dizimistaService.updateDizimista(dizimista);
+    }
+
 
 
 
