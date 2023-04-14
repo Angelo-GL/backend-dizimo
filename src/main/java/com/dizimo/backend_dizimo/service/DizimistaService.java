@@ -2,7 +2,6 @@ package com.dizimo.backend_dizimo.service;
 
 import com.dizimo.backend_dizimo.dto.MessageResposeDTO;
 import com.dizimo.backend_dizimo.entities.Dizimista;
-import com.dizimo.backend_dizimo.entities.User;
 import com.dizimo.backend_dizimo.exceptions.UserNotFoundExceptions;
 import com.dizimo.backend_dizimo.repositories.DizimistaRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -49,7 +48,6 @@ public class DizimistaService {
             return new MessageResposeDTO("Not found Dizimista of Id " + dizimista.getId());
         }
     }
-
 
 
     private MessageResposeDTO createMessageResponse(Long id) {
