@@ -40,7 +40,8 @@ public class Dizimista {
     @Column(nullable = true)
     private String celular;
 
-    @Column
+
+    @OneToMany(mappedBy = "dizimista", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private List<Oferta> ofertas = new ArrayList<>();
 
     public Dizimista(){}
