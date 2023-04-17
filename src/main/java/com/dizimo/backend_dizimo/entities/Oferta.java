@@ -5,7 +5,6 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 
 import java.time.LocalDate;
-import java.util.List;
 import java.util.Objects;
 
 
@@ -35,6 +34,7 @@ public class Oferta {
     @JsonIgnore
     private Dizimista dizimista;
 
+    public Oferta () {}
     public Oferta(Long id, Double value, String mesReferente, LocalDate date, String obs, Dizimista dizimista) {
         this.id = id;
         this.value = value;
