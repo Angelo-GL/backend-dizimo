@@ -3,7 +3,6 @@ package com.dizimo.backend_dizimo.service;
 import com.dizimo.backend_dizimo.dto.MessageResposeDTO;
 import com.dizimo.backend_dizimo.entities.Dizimista;
 import com.dizimo.backend_dizimo.entities.Oferta;
-import com.dizimo.backend_dizimo.entities.User;
 import com.dizimo.backend_dizimo.exceptions.UserNotFoundExceptions;
 import com.dizimo.backend_dizimo.repositories.OfertaRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,21 +16,21 @@ public class OfertaService {
     @Autowired
     private OfertaRepository ofertaRepository;
 
-    private MessageResposeDTO createOferta(Dizimista dizimista, Oferta oferta){
+    public MessageResposeDTO createOferta(Dizimista dizimista, Oferta oferta){
         oferta.setDizimista(dizimista);
         Oferta saveOferta = ofertaRepository.save(oferta);
         return createMessageResponse(saveOferta.getId());
     }
 
-    private List<Oferta> findAllOfertas(){
+    public List<Oferta> findAllOfertas(){
         return ofertaRepository.findAll();
     }
 
-    private Oferta findByIdOferta (Long id) throws UserNotFoundExceptions {
+    public Oferta findByIdOferta (Long id) throws UserNotFoundExceptions {
         return verifyIfExists(id);
     }
 
-    private MessageResposeDTO updateOferta (Oferta oferta){
+    public MessageResposeDTO updateOferta (Oferta oferta){
         Optional<Oferta> ofertaFound = ofertaRepository.findById(oferta.getId());
 
         if(ofertaFound.isPresent()){
@@ -45,6 +44,10 @@ public class OfertaService {
 
             return new MessageResposeDTO ("Update Oferta Id "+ oferta.getId());
         } return new MessageResposeDTO("Not found Oferta of Id " + oferta.getId());
+    }
+
+    public void deleteOferta (Long id){
+        ofertaRepository.deleteById(id);
     }
 
 
