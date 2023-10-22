@@ -1,43 +1,30 @@
-package com.dizimo.backend_dizimo.entities;
+package com.dizimo.backend_dizimo.dto;
 
-import jakarta.persistence.*;
+
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
-import org.hibernate.validator.constraints.UUID;
 import org.hibernate.validator.constraints.br.CPF;
 
-@Entity
-@Table(name= "users")
-public class User {
-    private static final long serialVersionUID = 1L;
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private UUID id;
-    @Column(nullable = false)
+public class UserDTO {
+    @NotBlank
     private String name;
-    @Column(nullable = false, unique = true)
+    @Email
+    @NotBlank
     private String email;
-    @Column(nullable = false)
+    @NotBlank
     private String passWord;
-    @Column(nullable = false, unique = true)
+    @NotBlank
+    @CPF
     private String cpf;
 
-    public  User () {}
+    public UserDTO() {
+    }
 
-    public User(UUID id, String name, String email, String passWord, String cpf) {
-        this.id = id;
+    public UserDTO(String name, String email, String passWord, String cpf) {
         this.name = name;
         this.email = email;
         this.passWord = passWord;
         this.cpf = cpf;
-    }
-
-    public UUID getId() {
-        return id;
-    }
-
-    public void setId(UUID id) {
-        this.id = id;
     }
 
     public String getName() {

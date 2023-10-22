@@ -1,10 +1,16 @@
 package com.dizimo.backend_dizimo.service;
 
 import com.dizimo.backend_dizimo.dto.MessageResposeDTO;
+import com.dizimo.backend_dizimo.dto.UserDTO;
 import com.dizimo.backend_dizimo.entities.User;
 import com.dizimo.backend_dizimo.exceptions.UserNotFoundExceptions;
 import com.dizimo.backend_dizimo.repositories.UserRepository;
+import jakarta.transaction.Transactional;
+import org.hibernate.validator.constraints.UUID;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -16,16 +22,16 @@ public class UserService {
     @Autowired
     private UserRepository repository;
 
-    public MessageResposeDTO createUser(User user) {
-        User saveUser = repository.save(user);
-        return createMessageResponse(saveUser.getId());
+    @Transactional
+    public User createUser(User user) {
+        return repository.save(user);
     }
-
+    /*
     public List<User> findAllUser(){
         return repository.findAll();
     }
 
-    public User findByIdUser(long id) throws UserNotFoundExceptions {
+    public User findByIdUser(UUID id) throws UserNotFoundExceptions {
         return verifyIfExists(id);
     }
 
@@ -47,7 +53,7 @@ public class UserService {
 
 
 
-    private MessageResposeDTO createMessageResponse(Long id) {
+    private MessageResposeDTO createMessageResponse(UUID id) {
         return new MessageResposeDTO("Created User with ID" + id);
     }
 
@@ -56,4 +62,6 @@ public class UserService {
                 .findById(id)
                 .orElseThrow(UserNotFoundExceptions::new);
     }
+
+     */
 }
