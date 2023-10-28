@@ -25,28 +25,27 @@ public class UserController {
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public ResponseEntity<Object> createUser(@RequestBody @Valid UserDTO userDTO){
-        User user = new User();
-        BeanUtils.copyProperties(userDTO, user);
-        return ResponseEntity.status(HttpStatus.CREATED).body(userService.createUser(user));
+        if(userService.existsByCpf(userDTO.getCpf())){
+            return  ResponseEntity.status(HttpStatus.CONFLICT).body("Conflict: CPF já possui cadastro");
+        }
+        return ResponseEntity.status(HttpStatus.CREATED).body(userService.createUser(userDTO));
     }
 
-    /*
+
     @GetMapping
     public ResponseEntity<List<User>> findAll (){
-        return ResponseEntity.ok(userService.findAllUser());
+        return ResponseEntity.status(HttpStatus.OK).body(userService.findAllUser());
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<User> findById (@PathVariable UUID id) throws UserNotFoundExceptions {
-        User user = userService.findByIdUser(id);
-        return ResponseEntity.ok(user);
+    public ResponseEntity<User> findById (@PathVariable Long id) {
+        User user = new User();
+        user = userService.findByIdUser(id);
+        return ResponseEntity.status(HttpStatus.OK).body(user);
     }
 
     @PutMapping()
     public MessageResposeDTO UpdateUser (@RequestBody @Valid User user){
         return userService.updateUser(user);
     }
-
-
-     */
 }

@@ -1,18 +1,18 @@
 package com.dizimo.backend_dizimo.entities;
 
 import jakarta.persistence.*;
-import jakarta.validation.constraints.Email;
-import jakarta.validation.constraints.NotBlank;
-import org.hibernate.validator.constraints.UUID;
-import org.hibernate.validator.constraints.br.CPF;
+
+
+import java.io.Serializable;
+import java.util.UUID;
 
 @Entity
 @Table(name= "users")
-public class User {
+public class User implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private UUID id;
+    private Long id;
     @Column(nullable = false)
     private String name;
     @Column(nullable = false, unique = true)
@@ -24,7 +24,7 @@ public class User {
 
     public  User () {}
 
-    public User(UUID id, String name, String email, String passWord, String cpf) {
+    public User(Long id, String name, String email, String passWord, String cpf) {
         this.id = id;
         this.name = name;
         this.email = email;
@@ -32,11 +32,11 @@ public class User {
         this.cpf = cpf;
     }
 
-    public UUID getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(UUID id) {
+    public void setId(Long id) {
         this.id = id;
     }
 

@@ -3,6 +3,7 @@ package com.dizimo.backend_dizimo.service;
 import com.dizimo.backend_dizimo.dto.MessageResposeDTO;
 import com.dizimo.backend_dizimo.dto.UserDTO;
 import com.dizimo.backend_dizimo.entities.User;
+import com.dizimo.backend_dizimo.exceptions.EntityNotFoundException;
 import com.dizimo.backend_dizimo.exceptions.UserNotFoundExceptions;
 import com.dizimo.backend_dizimo.repositories.UserRepository;
 import jakarta.transaction.Transactional;
@@ -23,16 +24,18 @@ public class UserService {
     private UserRepository repository;
 
     @Transactional
-    public User createUser(User user) {
+    public User createUser(UserDTO userDTO) {
+        User user = new User();
+        BeanUtils.copyProperties(userDTO, user);
         return repository.save(user);
     }
-    /*
+
     public List<User> findAllUser(){
         return repository.findAll();
     }
 
-    public User findByIdUser(UUID id) throws UserNotFoundExceptions {
-        return verifyIfExists(id);
+    public User findByIdUser(Long id) {
+        return repository.findById(id).orElseThrow(()-> new EntityNotFoundException("id not found "+ id));
     }
 
     public MessageResposeDTO updateUser (User user){
@@ -51,17 +54,12 @@ public class UserService {
         }
     }
 
-
+public boolean existsByCpf(String cpf){
+        return repository.existsByCpf(cpf);
+}
 
     private MessageResposeDTO createMessageResponse(UUID id) {
         return new MessageResposeDTO("Created User with ID" + id);
     }
 
-    private User verifyIfExists(Long id) throws UserNotFoundExceptions {
-        return repository
-                .findById(id)
-                .orElseThrow(UserNotFoundExceptions::new);
-    }
-
-     */
 }

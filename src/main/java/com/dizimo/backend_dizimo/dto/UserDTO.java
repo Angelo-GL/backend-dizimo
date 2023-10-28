@@ -13,8 +13,8 @@ public class UserDTO {
     private String email;
     @NotBlank
     private String passWord;
-    @NotBlank
     @CPF
+    @NotBlank
     private String cpf;
 
     public UserDTO() {
