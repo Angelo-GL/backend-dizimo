@@ -3,6 +3,7 @@ package com.dizimo.backend_dizimo.service;
 import com.dizimo.backend_dizimo.dto.MessageResposeDTO;
 import com.dizimo.backend_dizimo.dto.UserDTO;
 import com.dizimo.backend_dizimo.entities.User;
+import com.dizimo.backend_dizimo.exceptions.EntityConflict;
 import com.dizimo.backend_dizimo.exceptions.EntityNotFoundException;
 import com.dizimo.backend_dizimo.exceptions.UserNotFoundExceptions;
 import com.dizimo.backend_dizimo.repositories.UserRepository;
@@ -24,10 +25,18 @@ public class UserService {
     private UserRepository repository;
 
     @Transactional
-    public User createUser(UserDTO userDTO) {
-        User user = new User();
-        BeanUtils.copyProperties(userDTO, user);
-        return repository.save(user);
+    public User createUser(UserDTO userDTO) throws EntityConflict {
+        if(existsByCpf(userDTO.getCpf())){
+            throw new EntityConflict("Conflict: CPF já possui cadastro");
+        }else if(existsByName(userDTO.getName())){
+            throw new EntityConflict("Conflict: Nome já possui cadastro");
+        }else if(existsByEmail(userDTO.getEmail())){
+            throw new EntityConflict("Conflict: E-mail já possui cadastro");
+        } else {
+            User user = new User();
+            BeanUtils.copyProperties(userDTO, user);
+            return repository.save(user);
+        }
     }
 
     public List<User> findAllUser(){
@@ -38,28 +47,30 @@ public class UserService {
         return repository.findById(id).orElseThrow(()-> new EntityNotFoundException("id not found "+ id));
     }
 
-    public MessageResposeDTO updateUser (User user){
-        Optional<User> userFund = repository.findById(user.getId());
+    public User updateUser (UserDTO userDTO){
+        User user = new User();
+        BeanUtils.copyProperties(userDTO, user);
 
-        if (userFund.isPresent()) {
-            User userUpdate = userFund.get();
-            userUpdate.setName(user.getName());
-            userUpdate.setCpf(user.getCpf());
-            userUpdate.setEmail(user.getEmail());
-            userUpdate.setPassWord(user.getPassWord());
-            repository.save(userUpdate);
-            return new MessageResposeDTO("Update User Id" + user.getId());
-        } else {
-            return new MessageResposeDTO("Not found User of Id " + user.getId());
-        }
+        User userFund = findByIdUser(user.getId());
+
+        userFund.setName(user.getName());
+        userFund.setCpf(user.getCpf());
+        userFund.setEmail(user.getEmail());
+        userFund.setPassWord(user.getPassWord());
+        return repository.save(userFund);
     }
 
-public boolean existsByCpf(String cpf){
+    public boolean existsByCpf(String cpf){
         return repository.existsByCpf(cpf);
-}
-
-    private MessageResposeDTO createMessageResponse(UUID id) {
-        return new MessageResposeDTO("Created User with ID" + id);
     }
+
+    public boolean existsByName(String name){
+        return  repository.existsByName(name);
+    }
+
+    public boolean existsByEmail(String email){
+        return  repository.existsByEmail(email);
+    }
+
 
 }

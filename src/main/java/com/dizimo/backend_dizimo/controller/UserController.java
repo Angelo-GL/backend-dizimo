@@ -24,10 +24,7 @@ public class UserController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public ResponseEntity<Object> createUser(@RequestBody @Valid UserDTO userDTO){
-        if(userService.existsByCpf(userDTO.getCpf())){
-            return  ResponseEntity.status(HttpStatus.CONFLICT).body("Conflict: CPF já possui cadastro");
-        }
+    public ResponseEntity<User> createUser(@RequestBody @Valid UserDTO userDTO){
         return ResponseEntity.status(HttpStatus.CREATED).body(userService.createUser(userDTO));
     }
 
@@ -39,13 +36,12 @@ public class UserController {
 
     @GetMapping("/{id}")
     public ResponseEntity<User> findById (@PathVariable Long id) {
-        User user = new User();
-        user = userService.findByIdUser(id);
+        User user = userService.findByIdUser(id);
         return ResponseEntity.status(HttpStatus.OK).body(user);
     }
 
     @PutMapping()
-    public MessageResposeDTO UpdateUser (@RequestBody @Valid User user){
-        return userService.updateUser(user);
+    public ResponseEntity<User> UpdateUser (@RequestBody @Valid UserDTO userDTO){
+        return ResponseEntity.status(HttpStatus.OK).body(userService.updateUser(userDTO));
     }
 }

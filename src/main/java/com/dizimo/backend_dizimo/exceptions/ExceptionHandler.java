@@ -20,4 +20,16 @@ public class ExceptionHandler {
         err.setPath(request.getRequestURI());
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(err);
     }
+
+    @org.springframework.web.bind.annotation.ExceptionHandler(EntityConflict.class)
+    public ResponseEntity<StandardError> entityConflict (EntityConflict entityConflict, HttpServletRequest request){
+        StandardError err = new StandardError();
+
+        err.setTimestamp(Instant.now());
+        err.setStatus(HttpStatus.CONFLICT.value());
+        err.setError("Response CONFLICT");
+        err.setMessage(entityConflict.getMessage());
+        err.setPath(request.getRequestURI());
+        return ResponseEntity.status(HttpStatus.CONFLICT).body(err);
+    }
 }
