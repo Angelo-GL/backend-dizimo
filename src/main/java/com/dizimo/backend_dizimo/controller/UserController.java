@@ -40,8 +40,8 @@ public class UserController {
         return ResponseEntity.status(HttpStatus.OK).body(user);
     }
 
-    @PutMapping()
-    public ResponseEntity<User> UpdateUser (@RequestBody @Valid UserDTO userDTO){
-        return ResponseEntity.status(HttpStatus.OK).body(userService.updateUser(userDTO));
+    @PutMapping("/{id}")
+    public ResponseEntity<User> UpdateUser (@RequestBody @Valid UserDTO userDTO, @PathVariable Long id){
+        return ResponseEntity.status(HttpStatus.OK).body(userService.updateUser(userDTO, id));
     }
 }

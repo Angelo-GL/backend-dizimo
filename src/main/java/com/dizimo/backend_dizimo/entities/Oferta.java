@@ -16,15 +16,12 @@ public class Oferta {
     private Long id;
 
     @Column(nullable = false)
-    @NotBlank
     private Double value;
 
     @Column(nullable = false)
-    @NotBlank
     private String mesReferente;
 
     @Column(nullable = false)
-    @NotBlank
     private LocalDate date;
 
     @Column(nullable = true)

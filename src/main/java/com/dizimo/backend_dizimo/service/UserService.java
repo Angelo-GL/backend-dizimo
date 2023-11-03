@@ -47,11 +47,11 @@ public class UserService {
         return repository.findById(id).orElseThrow(()-> new EntityNotFoundException("id not found "+ id));
     }
 
-    public User updateUser (UserDTO userDTO){
+    public User updateUser (UserDTO userDTO, Long id){
         User user = new User();
         BeanUtils.copyProperties(userDTO, user);
 
-        User userFund = findByIdUser(user.getId());
+        User userFund = findByIdUser(id);
 
         userFund.setName(user.getName());
         userFund.setCpf(user.getCpf());
