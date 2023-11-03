@@ -1,8 +1,8 @@
 package com.dizimo.backend_dizimo.entities;
 
 import jakarta.persistence.*;
-import jakarta.validation.constraints.NotBlank;
 
+import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
@@ -10,25 +10,23 @@ import java.util.Objects;
 
 @Entity
 @Table(name = "dizimistas")
-public class Dizimista {
+public class Dizimista implements Serializable {
+    private static final long serialVersionUID = 1L;
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(nullable = false)
-    @NotBlank
+    @Column(nullable = false, unique = true)
     private String name;
 
     @Column(nullable = false)
-    @NotBlank
     private LocalDate nascimento;
 
     @Column(nullable = false)
-    @NotBlank
     private String bairro;
 
     @Column(nullable = false)
-    @NotBlank
     private String rua;
 
     @Column(nullable = true)

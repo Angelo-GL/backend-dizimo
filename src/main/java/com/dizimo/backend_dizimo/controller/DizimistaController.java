@@ -1,5 +1,6 @@
 package com.dizimo.backend_dizimo.controller;
 
+import com.dizimo.backend_dizimo.dto.DizimistaDTO;
 import com.dizimo.backend_dizimo.dto.MessageResposeDTO;
 import com.dizimo.backend_dizimo.entities.Dizimista;
 import com.dizimo.backend_dizimo.entities.Oferta;
@@ -15,7 +16,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping(value = "/dizimistas")
+@RequestMapping(value = "/dizimista")
 public class DizimistaController {
     @Autowired
     private DizimistaService dizimistaService;
@@ -25,8 +26,8 @@ public class DizimistaController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public MessageResposeDTO createDizimista(@RequestBody @Valid Dizimista dizimista){
-        return dizimistaService.createDizimista(dizimista);
+    public ResponseEntity<Dizimista> createDizimista(@RequestBody @Valid DizimistaDTO dizimistaDTO){
+        return ResponseEntity.status(HttpStatus.OK).body(dizimistaService.createDizimista(dizimistaDTO));
     }
 
     @GetMapping
@@ -36,12 +37,12 @@ public class DizimistaController {
 
 
     @PutMapping
-    public MessageResposeDTO updateDizimista (@RequestBody @Valid Dizimista dizimista){
-        return dizimistaService.updateDizimista(dizimista);
+    public ResponseEntity<Dizimista> updateDizimista (@RequestBody @Valid DizimistaDTO dizimistaDTO){
+        return ResponseEntity.status(HttpStatus.OK).body(dizimistaService.updateDizimista(dizimistaDTO));
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Dizimista> findById (@PathVariable Long id) throws UserNotFoundExceptions {
+    public ResponseEntity<Dizimista> findById (@PathVariable Long id){
         return ResponseEntity.ok(dizimistaService.findByIdDizimista(id));
     }
 

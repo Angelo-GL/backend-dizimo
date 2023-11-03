@@ -2,6 +2,8 @@ package com.dizimo.backend_dizimo.dto;
 
 import com.dizimo.backend_dizimo.entities.Oferta;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -10,7 +12,8 @@ import java.util.List;
 public class DizimistaDTO {
     @NotBlank
     private String name;
-    @NotBlank
+    @NotNull
+    @DateTimeFormat(pattern = "YYYY-MM-DD")
     private LocalDate nascimento;
     @NotBlank
     private String bairro;

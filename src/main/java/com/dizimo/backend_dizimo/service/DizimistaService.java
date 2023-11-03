@@ -1,9 +1,14 @@
 package com.dizimo.backend_dizimo.service;
 
+import com.dizimo.backend_dizimo.dto.DizimistaDTO;
 import com.dizimo.backend_dizimo.dto.MessageResposeDTO;
 import com.dizimo.backend_dizimo.entities.Dizimista;
+import com.dizimo.backend_dizimo.exceptions.EntityConflict;
+import com.dizimo.backend_dizimo.exceptions.EntityNotFoundException;
 import com.dizimo.backend_dizimo.exceptions.UserNotFoundExceptions;
 import com.dizimo.backend_dizimo.repositories.DizimistaRepository;
+import jakarta.transaction.Transactional;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -12,51 +17,45 @@ import java.util.Optional;
 
 @Service
 public class DizimistaService {
-
     @Autowired
     private DizimistaRepository repository;
-
-    public MessageResposeDTO createDizimista (Dizimista dizimista){
-        Dizimista saveDizimista = repository.save(dizimista);
-        return createMessageResponse(saveDizimista.getId());
+    @Transactional
+    public Dizimista createDizimista (DizimistaDTO dizimistaDTO) throws EntityConflict{
+        if(existsByName(dizimistaDTO.getName())){
+            throw new EntityConflict("CONFLICT: Nome já cadastrado!");
+        }
+        dizimistaDTO.setAtivo(true);
+        Dizimista dizimista = new Dizimista();
+        BeanUtils.copyProperties(dizimistaDTO, dizimista);
+        return repository.save(dizimista);
     }
 
     public List<Dizimista> findAllDizimista(){
         return repository.findAll();
     }
 
-    public Dizimista findByIdDizimista (Long id) throws UserNotFoundExceptions {
-        return verifyIfExists(id);
+    public Dizimista findByIdDizimista (Long id) {
+        return repository.findById(id).orElseThrow(()-> new EntityNotFoundException("ENTITY_NOT_FUND: Dizimista not found!"));
     }
 
-    public MessageResposeDTO updateDizimista (Dizimista dizimista){
-        Optional<Dizimista> dizimistaFound = repository.findById(dizimista.getId());
+    public Dizimista updateDizimista (DizimistaDTO dizimistaDTO){
+        Dizimista dizimista = new Dizimista();
+        BeanUtils.copyProperties(dizimistaDTO, dizimista);
 
-        if(dizimistaFound.isPresent()){
-            Dizimista dizUpdate = dizimistaFound.get();
+        Dizimista findDizimista = findByIdDizimista(dizimista.getId());
 
-            dizUpdate.setName(dizimista.getName());
-            dizUpdate.setBairro(dizUpdate.getBairro());
-            dizUpdate.setAtivo(dizimista.getAtivo());
-            dizUpdate.setRua(dizimista.getRua());
-            dizUpdate.setNumero(dizimista.getNumero());
-            dizUpdate.setCelular(dizimista.getCelular());
-            dizUpdate.setNascimento(dizimista.getNascimento());
-            repository.save(dizUpdate);
-            return new MessageResposeDTO("Update DIzimista Id" + dizimista.getId());
-        }else {
-            return new MessageResposeDTO("Not found Dizimista of Id " + dizimista.getId());
-        }
+        findDizimista.setName(dizimista.getName());
+        findDizimista.setBairro(dizimista.getBairro());
+        findDizimista.setAtivo(dizimista.getAtivo());
+        findDizimista.setRua(dizimista.getRua());
+        findDizimista.setNumero(dizimista.getNumero());
+        findDizimista.setCelular(dizimista.getCelular());
+        findDizimista.setNascimento(dizimista.getNascimento());
+        return repository.save(findDizimista);
     }
 
-
-    private MessageResposeDTO createMessageResponse(Long id) {
-        return new MessageResposeDTO("Created Dizimista with ID" + id);
+    boolean existsByName(String name){
+        return repository.existsByName(name);
     }
 
-    private Dizimista verifyIfExists(Long id) throws UserNotFoundExceptions {
-        return repository
-                .findById(id)
-                .orElseThrow(UserNotFoundExceptions::new);
-    }
 }
