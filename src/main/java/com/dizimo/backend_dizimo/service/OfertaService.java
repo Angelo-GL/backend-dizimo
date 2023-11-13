@@ -1,13 +1,18 @@
 package com.dizimo.backend_dizimo.service;
 
 import com.dizimo.backend_dizimo.dto.MessageResposeDTO;
+import com.dizimo.backend_dizimo.dto.OfertaDTO;
 import com.dizimo.backend_dizimo.entities.Dizimista;
 import com.dizimo.backend_dizimo.entities.Oferta;
 import com.dizimo.backend_dizimo.exceptions.UserNotFoundExceptions;
+import com.dizimo.backend_dizimo.repositories.DizimistaRepository;
 import com.dizimo.backend_dizimo.repositories.OfertaRepository;
+import jakarta.transaction.Transactional;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
@@ -15,11 +20,21 @@ import java.util.Optional;
 public class OfertaService {
     @Autowired
     private OfertaRepository ofertaRepository;
+    @Autowired
+    private DizimistaService dizimistaService;
 
-    public MessageResposeDTO createOferta(Dizimista dizimista, Oferta oferta){
-        oferta.setDizimista(dizimista);
-        Oferta saveOferta = ofertaRepository.save(oferta);
-        return createMessageResponse(saveOferta.getId());
+    @Transactional
+    public Oferta createOferta(Long id, OfertaDTO ofertaDTO){
+        Dizimista dizmista = dizimistaService.findByIdDizimista(id);
+
+        ofertaDTO.setDate(LocalDate.now());
+
+        Oferta oferta = new Oferta();
+        BeanUtils.copyProperties(ofertaDTO, oferta);
+
+        oferta.setDizimista(dizmista);
+        return ofertaRepository.save(oferta);
+
     }
 
     public List<Oferta> findAllOfertas(){

@@ -21,7 +21,7 @@ public class Oferta {
     @Column(nullable = false)
     private String mesReferente;
 
-    @Column(nullable = false)
+    @Column(nullable = true)
     private LocalDate date;
 
     @Column(nullable = true)

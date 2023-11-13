@@ -38,11 +38,11 @@ public class DizimistaService {
         return repository.findById(id).orElseThrow(()-> new EntityNotFoundException("ENTITY_NOT_FUND: Dizimista not found!"));
     }
 
-    public Dizimista updateDizimista (DizimistaDTO dizimistaDTO){
+    public Dizimista updateDizimista (DizimistaDTO dizimistaDTO, Long id){
         Dizimista dizimista = new Dizimista();
         BeanUtils.copyProperties(dizimistaDTO, dizimista);
 
-        Dizimista findDizimista = findByIdDizimista(dizimista.getId());
+        Dizimista findDizimista = findByIdDizimista(id);
 
         findDizimista.setName(dizimista.getName());
         findDizimista.setBairro(dizimista.getBairro());

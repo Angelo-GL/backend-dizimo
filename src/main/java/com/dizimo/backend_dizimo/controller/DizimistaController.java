@@ -36,9 +36,9 @@ public class DizimistaController {
     }
 
 
-    @PutMapping
-    public ResponseEntity<Dizimista> updateDizimista (@RequestBody @Valid DizimistaDTO dizimistaDTO){
-        return ResponseEntity.status(HttpStatus.OK).body(dizimistaService.updateDizimista(dizimistaDTO));
+    @PutMapping("{id}")
+    public ResponseEntity<Dizimista> updateDizimista (@RequestBody @Valid DizimistaDTO dizimistaDTO, @PathVariable Long id){
+        return ResponseEntity.status(HttpStatus.OK).body(dizimistaService.updateDizimista(dizimistaDTO, id));
     }
 
     @GetMapping("/{id}")
@@ -46,11 +46,5 @@ public class DizimistaController {
         return ResponseEntity.ok(dizimistaService.findByIdDizimista(id));
     }
 
-    @PostMapping("/{id}/oferta")
-    @ResponseStatus(HttpStatus.CREATED)
-    public MessageResposeDTO createOferta (@RequestBody @Valid Oferta oferta, @PathVariable Long id)
-            throws UserNotFoundExceptions {
-        Dizimista dizimista = dizimistaService.findByIdDizimista(id);
-        return ofertaService.createOferta(dizimista, oferta);
-    }
+
 }
