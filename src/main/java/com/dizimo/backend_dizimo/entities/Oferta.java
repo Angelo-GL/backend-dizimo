@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.Objects;
 
@@ -16,7 +17,7 @@ public class Oferta {
     private Long id;
 
     @Column(nullable = false)
-    private Double value;
+    private BigDecimal value;
 
     @Column(nullable = false)
     private String mesReferente;
@@ -32,7 +33,7 @@ public class Oferta {
     private Dizimista dizimista;
 
     public Oferta () {}
-    public Oferta(Long id, Double value, String mesReferente, LocalDate date, String obs, Dizimista dizimista) {
+    public Oferta(Long id, BigDecimal value, String mesReferente, LocalDate date, String obs, Dizimista dizimista) {
         this.id = id;
         this.value = value;
         this.mesReferente = mesReferente;
@@ -49,11 +50,11 @@ public class Oferta {
         this.id = id;
     }
 
-    public Double getValue() {
+    public BigDecimal getValue() {
         return value;
     }
 
-    public void setValue(Double value) {
+    public void setValue(BigDecimal value) {
         this.value = value;
     }
 

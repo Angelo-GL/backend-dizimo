@@ -1,9 +1,7 @@
 package com.dizimo.backend_dizimo.controller;
 
-import com.dizimo.backend_dizimo.dto.MessageResposeDTO;
 import com.dizimo.backend_dizimo.dto.OfertaDTO;
 import com.dizimo.backend_dizimo.entities.Oferta;
-import com.dizimo.backend_dizimo.exceptions.UserNotFoundExceptions;
 import com.dizimo.backend_dizimo.service.OfertaService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,7 +12,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping(value = "/oferta")
+@RequestMapping(value = "/oferta/")
 public class OfertaController {
 
     @Autowired
@@ -31,18 +29,20 @@ public class OfertaController {
         return ResponseEntity.ok(ofertaService.findAllOfertas());
     }
 
-    @PutMapping
-    public MessageResposeDTO updateOferta (@RequestBody @Valid Oferta oferta){
-        return ofertaService.updateOferta(oferta);
+    @PutMapping("/{id}")
+    public ResponseEntity<Oferta> updateOferta (@RequestBody @Valid OfertaDTO ofertaDTO, @PathVariable Long id ){
+        return ResponseEntity.status(HttpStatus.CREATED).body(ofertaService.updateOferta(ofertaDTO, id));
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Oferta> findById (@PathVariable Long id) throws UserNotFoundExceptions {
-        return ResponseEntity.ok(ofertaService.findByIdOferta(id));
+    public ResponseEntity<Oferta> findById (@PathVariable Long id){
+        return ResponseEntity.status(HttpStatus.OK).body(ofertaService.findByIdOferta(id));
     }
 
     @DeleteMapping("/{id}")
-    public void deleteOferta (@PathVariable Long id){
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public ResponseEntity<Void> deleteOferta (@PathVariable Long id){
         ofertaService.deleteOferta(id);
+        return ResponseEntity.noContent().build();
     }
 }

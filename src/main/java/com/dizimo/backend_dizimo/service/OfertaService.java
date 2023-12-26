@@ -4,6 +4,7 @@ import com.dizimo.backend_dizimo.dto.MessageResposeDTO;
 import com.dizimo.backend_dizimo.dto.OfertaDTO;
 import com.dizimo.backend_dizimo.entities.Dizimista;
 import com.dizimo.backend_dizimo.entities.Oferta;
+import com.dizimo.backend_dizimo.exceptions.EntityNotFoundException;
 import com.dizimo.backend_dizimo.exceptions.UserNotFoundExceptions;
 import com.dizimo.backend_dizimo.repositories.DizimistaRepository;
 import com.dizimo.backend_dizimo.repositories.OfertaRepository;
@@ -34,45 +35,35 @@ public class OfertaService {
 
         oferta.setDizimista(dizmista);
         return ofertaRepository.save(oferta);
-
     }
 
     public List<Oferta> findAllOfertas(){
         return ofertaRepository.findAll();
     }
 
-    public Oferta findByIdOferta (Long id) throws UserNotFoundExceptions {
-        return verifyIfExists(id);
+    public Oferta findByIdOferta (Long id) {
+        return ofertaRepository.findById(id).orElseThrow(()-> new EntityNotFoundException("Entity NOT FOUND: Oferta not found!"));
     }
 
-    public MessageResposeDTO updateOferta (Oferta oferta){
-        Optional<Oferta> ofertaFound = ofertaRepository.findById(oferta.getId());
+    public Oferta updateOferta (OfertaDTO ofertaDTO, Long id){
+        Oferta findOferta = findByIdOferta(id);
 
-        if(ofertaFound.isPresent()){
-            Oferta ofertaUpdate = ofertaFound.get();
-            ofertaUpdate.setValue(oferta.getValue());
-            ofertaUpdate.setMesReferente(oferta.getMesReferente());
-            ofertaUpdate.setDate(oferta.getDate());
-            ofertaUpdate.setObs(oferta.getObs());
-
-            ofertaRepository.save(ofertaUpdate);
-
-            return new MessageResposeDTO ("Update Oferta Id "+ oferta.getId());
-        } return new MessageResposeDTO("Not found Oferta of Id " + oferta.getId());
+        findOferta.setValue(ofertaDTO.getValue());
+        findOferta.setObs(ofertaDTO.getObs());
+        findOferta.setMesReferente(ofertaDTO.getMesReferente());
+        return ofertaRepository.save(findOferta);
     }
-
+    @Transactional
     public void deleteOferta (Long id){
-        ofertaRepository.deleteById(id);
+        if(ofertaRepository.existsById(id)){
+            Oferta oferta = ofertaRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("Oferta não encontrada"));
+            Dizimista dizimista = oferta.getDizimista();
+            dizimista.getOfertas().remove(oferta);
+            ofertaRepository.deleteById(id);
+        } else {
+            throw new EntityNotFoundException("Oferta não encontrada");
+        }
+
     }
 
-
-    private Oferta verifyIfExists(Long id) throws UserNotFoundExceptions {
-        return ofertaRepository
-                .findById(id)
-                .orElseThrow(UserNotFoundExceptions::new);
-    }
-
-    private MessageResposeDTO createMessageResponse(Long id) {
-        return new MessageResposeDTO("Created oferta with ID" + id);
-    }
 }

@@ -5,11 +5,12 @@ import com.dizimo.backend_dizimo.entities.Dizimista;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 
 public class OfertaDTO {
     @NotNull
-    private Double value;
+    private BigDecimal value;
     @NotBlank
     private String mesReferente;
     private LocalDate date;
@@ -19,7 +20,7 @@ public class OfertaDTO {
     public OfertaDTO() {
     }
 
-    public OfertaDTO(Double value, String mesReferente, LocalDate date, String obs, Dizimista dizimista) {
+    public OfertaDTO(Double BigDecimal, String mesReferente, LocalDate date, String obs, Dizimista dizimista) {
         this.value = value;
         this.mesReferente = mesReferente;
         this.date = date;
@@ -27,11 +28,11 @@ public class OfertaDTO {
         this.dizimista = dizimista;
     }
 
-    public Double getValue() {
+    public BigDecimal getValue() {
         return value;
     }
 
-    public void setValue(Double value) {
+    public void setValue(BigDecimal value) {
         this.value = value;
     }
 

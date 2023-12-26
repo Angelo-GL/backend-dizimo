@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping(value = "/dizimista")
+@RequestMapping(value = "/dizimista/")
 public class DizimistaController {
     @Autowired
     private DizimistaService dizimistaService;
@@ -27,7 +27,7 @@ public class DizimistaController {
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public ResponseEntity<Dizimista> createDizimista(@RequestBody @Valid DizimistaDTO dizimistaDTO){
-        return ResponseEntity.status(HttpStatus.OK).body(dizimistaService.createDizimista(dizimistaDTO));
+        return ResponseEntity.status(HttpStatus.CREATED).body(dizimistaService.createDizimista(dizimistaDTO));
     }
 
     @GetMapping
