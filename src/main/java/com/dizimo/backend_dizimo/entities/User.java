@@ -1,35 +1,38 @@
 package com.dizimo.backend_dizimo.entities;
 
 import jakarta.persistence.*;
+import org.springframework.boot.autoconfigure.security.servlet.UserDetailsServiceAutoConfiguration;
+import org.springframework.security.core.userdetails.UserDetails;
 
 
 import java.io.Serializable;
-import java.util.UUID;
 
 @Entity
 @Table(name= "users")
-public class User implements Serializable {
-    private static final long serialVersionUID = 1L;
+public class User{
+
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
     @Column(nullable = false)
     private String name;
-    @Column(nullable = false, unique = true)
-    private String email;
     @Column(nullable = false)
-    private String passWord;
-    @Column(nullable = false, unique = true)
     private String cpf;
+    @Column(nullable = false)
+    private String celular;
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "credentials_id", referencedColumnName = "id")
+    private Credentials credentials;
 
-    public  User () {}
+    public User() {
+    }
 
-    public User(Long id, String name, String email, String passWord, String cpf) {
+    public User(Long id, String name, String cpf, String celular, Credentials credentials) {
         this.id = id;
         this.name = name;
-        this.email = email;
-        this.passWord = passWord;
         this.cpf = cpf;
+        this.celular = celular;
+        this.credentials = credentials;
     }
 
     public Long getId() {
@@ -48,27 +51,27 @@ public class User implements Serializable {
         this.name = name;
     }
 
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    public String getPassWord() {
-        return passWord;
-    }
-
-    public void setPassWord(String passWord) {
-        this.passWord = passWord;
-    }
-
     public String getCpf() {
         return cpf;
     }
 
     public void setCpf(String cpf) {
         this.cpf = cpf;
+    }
+
+    public String getCelular() {
+        return celular;
+    }
+
+    public void setCelular(String celular) {
+        this.celular = celular;
+    }
+
+    public Credentials getCredentials() {
+        return credentials;
+    }
+
+    public void setCredentials(Credentials credentials) {
+        this.credentials = credentials;
     }
 }
