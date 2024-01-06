@@ -1,5 +1,6 @@
 package com.dizimo.backend_dizimo.entities;
 
+import com.dizimo.backend_dizimo.dto.CredentialsRole;
 import jakarta.persistence.*;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -18,12 +19,12 @@ public class Credentials implements UserDetails {
     @Column(nullable = false)
     private String password;
     @Column(nullable = false)
-    private String role;
+    private CredentialsRole role;
 
     public Credentials() {
     }
 
-    public Credentials(Long id, String login, String password, String role) {
+    public Credentials(Long id, String login, String password, CredentialsRole role) {
         this.id = id;
         this.login = login;
         this.password = password;
@@ -84,11 +85,11 @@ public class Credentials implements UserDetails {
         this.password = password;
     }
 
-    public String getRole() {
+    public CredentialsRole getRole() {
         return role;
     }
 
-    public void setRole(String role) {
+    public void setRole(CredentialsRole role) {
         this.role = role;
     }
 }
