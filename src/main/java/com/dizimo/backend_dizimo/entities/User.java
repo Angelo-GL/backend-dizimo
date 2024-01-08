@@ -20,7 +20,7 @@ public class User{
     private String cpf;
     @Column(nullable = false)
     private String celular;
-    @OneToOne(cascade = CascadeType.ALL)
+    @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)
     @JoinColumn(name = "credentials_id", referencedColumnName = "id")
     private Credentials credentials;
 

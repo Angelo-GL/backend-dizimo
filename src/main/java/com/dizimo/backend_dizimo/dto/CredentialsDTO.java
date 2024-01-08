@@ -7,27 +7,27 @@ import jakarta.validation.constraints.NotBlank;
 public class CredentialsDTO {
     @NotBlank
     @Email
-    private String email;
+    private String login;
     @NotBlank
     private String password;
     @NotBlank
-    private String role;
+    private CredentialsRole role;
 
     public CredentialsDTO() {
     }
 
-    public CredentialsDTO(String email, String password, String role) {
-        this.email = email;
+    public CredentialsDTO(String login, String password, CredentialsRole role) {
+        this.login = login;
         this.password = password;
         this.role = role;
     }
 
-    public String getEmail() {
-        return email;
+    public String getLogin() {
+        return login;
     }
 
-    public void setEmail(String email) {
-        this.email = email;
+    public void setLogin(String login) {
+        this.login = login;
     }
 
     public String getPassword() {
@@ -38,11 +38,11 @@ public class CredentialsDTO {
         this.password = password;
     }
 
-    public String getRole() {
+    public CredentialsRole getRole() {
         return role;
     }
 
-    public void setRole(String role) {
+    public void setRole(CredentialsRole role) {
         this.role = role;
     }
 }

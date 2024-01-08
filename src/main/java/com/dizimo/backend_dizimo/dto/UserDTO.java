@@ -8,6 +8,7 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.OneToOne;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import org.hibernate.validator.constraints.br.CPF;
 
 public class UserDTO {
@@ -18,13 +19,13 @@ public class UserDTO {
     private String cpf;
     @NotBlank
     private String celular;
-    @NotBlank
-    private Credentials credentials;
+    @NotNull
+    private CredentialsDTO credentials;
 
     public UserDTO() {
     }
 
-    public UserDTO(String name, String cpf, String celular, Credentials credentials) {
+    public UserDTO(String name, String cpf, String celular, CredentialsDTO credentials) {
         this.name = name;
         this.cpf = cpf;
         this.celular = celular;
@@ -55,11 +56,11 @@ public class UserDTO {
         this.celular = celular;
     }
 
-    public Credentials getCredentials() {
+    public CredentialsDTO getCredentials() {
         return credentials;
     }
 
-    public void setCredentials(Credentials credentials) {
+    public void setCredentials(CredentialsDTO credentials) {
         this.credentials = credentials;
     }
 }
