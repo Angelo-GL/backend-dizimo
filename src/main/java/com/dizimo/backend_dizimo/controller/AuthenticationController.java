@@ -29,7 +29,7 @@ public class AuthenticationController {
     @PostMapping("/register")
     @ResponseStatus(HttpStatus.CREATED)
     public ResponseEntity<User> registerUser (@RequestBody @Valid UserDTO userDTO){
-        return ResponseEntity.status(HttpStatus.CREATED).body(userService.createdUser(userDTO));
+        return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
 
