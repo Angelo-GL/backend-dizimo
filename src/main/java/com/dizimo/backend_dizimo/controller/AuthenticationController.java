@@ -1,6 +1,7 @@
 package com.dizimo.backend_dizimo.controller;
 
 import com.dizimo.backend_dizimo.dto.AuthenticationDTO;
+import com.dizimo.backend_dizimo.dto.LoginResponseDTO;
 import com.dizimo.backend_dizimo.dto.UserDTO;
 import com.dizimo.backend_dizimo.entities.User;
 import com.dizimo.backend_dizimo.service.AuthenticationService;
@@ -22,9 +23,9 @@ public class AuthenticationController {
     private AuthenticationService authenticationService;
 
     @PostMapping("/login")
-    public ResponseEntity<Authentication> login (@RequestBody @Valid AuthenticationDTO dto){
-        authenticationService.login(dto);
-        return ResponseEntity.ok().build();
+    public ResponseEntity<LoginResponseDTO> login (@RequestBody @Valid AuthenticationDTO dto){
+
+        return ResponseEntity.ok(authenticationService.login(dto));
     }
     @PostMapping("/register")
     @ResponseStatus(HttpStatus.CREATED)

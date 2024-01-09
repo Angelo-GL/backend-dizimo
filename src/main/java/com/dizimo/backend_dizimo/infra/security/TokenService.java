@@ -4,6 +4,7 @@ import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.exceptions.JWTCreationException;
 import com.auth0.jwt.exceptions.JWTVerificationException;
+import com.dizimo.backend_dizimo.entities.Credentials;
 import com.dizimo.backend_dizimo.entities.User;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -16,12 +17,12 @@ import java.time.ZoneOffset;
 public class TokenService {
     @Value("${api.security.token.security}")
     private String secrete;
-    public String generateToken(User user){
+    public String generateToken(Credentials credentials){
         try {
             Algorithm algorithm = Algorithm.HMAC256(secrete);
             String token = JWT.create()
                     .withIssuer("dizimo-api")
-                    .withSubject(user.getCredentials().getLogin())
+                    .withSubject(credentials.getLogin())
                     .withExpiresAt(generateExpirationDate())
                     .sign(algorithm);
 
